@@ -1,21 +1,33 @@
-import React from 'react'
-import { Text, StyleSheet } from 'react-native'
-import { Button } from 'react-native-elements'
-import { SafeAreaView } from 'react-navigation'
+import React, { useContext } from 'react';
+import { StyleSheet, View } from 'react-native';
+import AuthForm from '../components/AuthForm';
+import { Context } from '../context/AuthContext'
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = () => {
+    const { state: { errorMessage }, signin } = useContext(Context)
     return (
-        <SafeAreaView>
-            <Text> LoginScreen </Text>
-            <Button
-                title="Go To Register"
-                onPress={() => { navigation.navigate('register') }}
+        <View style={styles.container}>
+            <AuthForm
+                headerText="Hi Welcome to GateAway! Get Sign in!"
+                errorMessage={errorMessage}
+                onSubmit={signin}
+                submitButtonText="Login"
             />
-        </SafeAreaView>
+        </View>
     )
 }
+LoginScreen.navigationOptions = () => {
+    return {
+        headerShown: false,
+    };
+};
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        marginTop: 2.81
 
+    }
 })
 
 export default LoginScreen
