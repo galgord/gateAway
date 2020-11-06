@@ -34,7 +34,7 @@ const isUserSignedIn = (dispatch) => async () => {
 const signin = dispatch => async ({ email, password }) => {
     try {
         const response = await Auth.createUserWithEmailAndPassword(email, password)
-        dispatch({ type: 'signin', payload: response.accessToken })
+        dispatch({ type: 'signin' })
         navigate('home')
     } catch (err) {
         dispatch({
