@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import { Card, Input } from 'react-native-elements'
@@ -8,8 +8,25 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 
 
-const AddGateScreen = () => {
+const AddGateScreen = ({ navigation }) => {
+    const [name, setName] = useState('')
+    const [phone, setPhone] = useState('')
+    const [long, setLong] = useState(1)
+    const [lat, setLat] = useState(1)
+
     const { sendData } = useContext(GateContext);
+
+    const handlePress = () => {
+        sendData(name, phone, { lat: lat, long: long });
+        clearData();
+        navigation.navigate('home');
+    }
+
+    const clearData = () => {
+        setName('');
+        setPhone('');
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <Image
@@ -23,22 +40,21 @@ const AddGateScreen = () => {
                 <Input
                     placeholder="Name.."
                     inputContainerStyle={styles.input}
+                    onChangeText={setName}
+                    value={name}
                 />
                 <Input
                     placeholder="Phone Number.."
                     inputContainerStyle={styles.input}
+                    onChangeText={setPhone}
+                    value={phone}
                 />
                 <Input
                     placeholder="Location..."
                     inputContainerStyle={styles.input}
                 />
-                <Input
-                    placeholder="Description.."
-                    inputContainerStyle={styles.input}
-                />
-                <TouchableOpacity
-                    onPress={() => sendData("test4", 123, { lat: 23444, long: 124443 })}
-                    style={styles.button}
+                <TouchableOpacity style={styles.button}
+                    onPress={handlePress}
                 >
                     <LinearGradient
                         colors={['#137D8B', '#189FB2']}
@@ -48,7 +64,7 @@ const AddGateScreen = () => {
                     </LinearGradient>
                 </TouchableOpacity>
             </Card>
-        </SafeAreaView>
+        </SafeAreaView >
     )
 }
 
