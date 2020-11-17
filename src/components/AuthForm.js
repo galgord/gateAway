@@ -3,7 +3,7 @@ import { Text, Button, Input } from 'react-native-elements'
 import { StyleSheet } from 'react-native'
 import Spacer from './Spacer'
 
-const AuthForm = ({ headerText, errorMessage, onSubmit, submitButtonText }) => {
+const AuthForm = ({ headerText, errorMessage, Button1Text, Button1Action, Button2Text, Button2Action }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
@@ -31,8 +31,12 @@ const AuthForm = ({ headerText, errorMessage, onSubmit, submitButtonText }) => {
             {errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null}
             <Spacer>
                 <Button
-                    title={submitButtonText}
-                    onPress={() => onSubmit({ email, password })}
+                    title={Button1Text}
+                    onPress={() => Button1Action({ email, password })}
+                />
+                <Button
+                    title={Button2Text}
+                    onPress={Button2Action}
                 />
             </Spacer>
         </>

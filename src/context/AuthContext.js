@@ -2,28 +2,21 @@ import createDataContext from './createDataContext';
 import { Auth } from '../firebase'
 import { navigate } from '../navigationRef'
 
-
 const authReducer = (state, action) => {
     switch (action.type) {
-        case 'signin':
+        case 'errorCleanup':
             return { errorMessage: '' }
-        case 'add_error':
+        case 'error':
             return { ...state, errorMessage: action.payload }
-        case 'signout':
-            return { errorMessage: '' }
         default:
             return state;
     }
 };
 
-const clearErrorMessage = dispatch => () => {
-    dispatch({ type: "clear_error_message" })
-}
-
 const isUserSignedIn = (dispatch) => async () => {
     Auth.onAuthStateChanged((user) => {
         if (user) {
-            dispatch({ type: 'signin' });
+            dispatch({ type: 'errorCleanup' });
             navigate('home');
         } else {
             navigate('login');
@@ -31,14 +24,27 @@ const isUserSignedIn = (dispatch) => async () => {
     });
 };
 
-const signin = dispatch => async ({ email, password }) => {
+const signIn = dispatch => async ({ email, password }) => {
     try {
-        const response = await Auth.createUserWithEmailAndPassword(email, password)
-        dispatch({ type: 'signin' })
+        await Auth.signInWithEmailAndPassword(email, password)
+        dispatch({ type: 'errorCleanup' })
         navigate('home')
     } catch (err) {
         dispatch({
-            type: 'add_error',
+            type: 'error',
+            payload: err.message
+        });
+    }
+};
+
+const register = dispatch => async ({ email, password }) => {
+    try {
+        await Auth.createUserWithEmailAndPassword(email, password)
+        dispatch({ type: 'errorCleanup' })
+        navigate('home')
+    } catch (err) {
+        dispatch({
+            type: 'error',
             payload: err.message
         });
     }
@@ -46,11 +52,11 @@ const signin = dispatch => async ({ email, password }) => {
 
 const signoutUser = dispatch => async () => {
     await Auth.signOut();
-    dispatch({ type: 'signout' })
+    dispatch({ type: 'errorCleanup' })
     navigate('login')
 }
 export const { Provider, Context } = createDataContext(
     authReducer,
-    { signin, clearErrorMessage, isUserSignedIn, signoutUser },
+    { register, isUserSignedIn, signoutUser, signIn },
     { errorMessage: '' }
 )

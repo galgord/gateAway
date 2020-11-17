@@ -1,19 +1,26 @@
 import React, { useContext } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-navigation'
+import { StyleSheet } from 'react-native';
 import AuthForm from '../components/AuthForm';
-import { Context } from '../context/AuthContext'
+import { Context as AuthContext } from '../context/AuthContext'
 
-const LoginScreen = () => {
-    const { state: { errorMessage }, signin } = useContext(Context)
+const LoginScreen = ({ navigation }) => {
+
+    const { state: { errorMessage }, signIn } = useContext(AuthContext)
+
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <AuthForm
-                headerText="Hi Welcome to GateAway! Get Sign in!"
+                headerText="Please Sign in Below"
                 errorMessage={errorMessage}
-                onSubmit={signin}
-                submitButtonText="Login"
+
+                Button1Text="Sign In"
+                Button1Action={signIn}
+
+                Button2Text="Register"
+                Button2Action={() => { navigation.navigate('register') }}
             />
-        </View>
+        </SafeAreaView>
     )
 }
 LoginScreen.navigationOptions = () => {
@@ -26,7 +33,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         marginTop: 2.81
-
     }
 })
 
