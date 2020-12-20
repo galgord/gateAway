@@ -26,7 +26,7 @@ const getData = dispatch => () => {
 }
 
 const sendData = dispatch => async (name, phone, location) => {
-    const data = { name, location }
+    const data = { name, location, phone }
     await Database.ref(userId).child(phone).set(data);
 }
 
