@@ -6,6 +6,8 @@ import { Context as GateContext } from "../context/GateContext";
 import { Entypo } from "@expo/vector-icons";
 import { NavigationEvents } from "react-navigation";
 import call from 'react-native-phone-call';
+import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
+
 
 const HomeScreen = ({ navigation }) => {
   const { getData, state } = useContext(GateContext);
@@ -14,17 +16,12 @@ const HomeScreen = ({ navigation }) => {
       <NavigationEvents onWillFocus={getData} />
       <Text> HomeScreen </Text>
       <Button
-        title="Call Gate"
+        title="Call Gates"
         onPress={() => {
-            const dataArray = Object.values(state);
-            console.log(dataArray[0].phone)
-          const args = {
-            number: dataArray[0].phone, // String value with the number to call
-            prompt: true, // Optional boolean property. Determines if the user should be prompt prior to the call
-          };
-
-          call(args).catch(console.error);
-        }}
+            // console.log(RNImmediatePhoneCall.immediatePhoneCall)
+            // RNImmediatePhoneCall.immediatePhoneCall('0123456789');
+        }
+        }
       />
       {state ? (
         <FlatList
